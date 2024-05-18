@@ -1,0 +1,218 @@
+# HashSet
+
+## Intro to HashSet
+
+_HashSet_ is one of the fundamental data structures in the Java Collections API.
+
+Let’s recall the most important aspects of this implementation:
+
+- It stores unique elements and permits nulls
+- It’s backed by a HashMap
+- It doesn’t maintain insertion order
+- It’s not thread-safe
+
+```java filename="hashset.java"
+public HashSet() {
+    map = new HashMap<>();
+}
+```
+
+## add()
+
+The add() method can be used for adding elements to a set. **The method contract states that an element will be added only when it isn’t already present in a set**. If an element was added, the method returns true, otherwise – false.
+
+We can add an element to a _HashSet_ like:
+
+```java filename="hashset_add.java"
+@Test
+public void whenAddingElement_shouldAddElement() {
+    Set<String> hashset = new HashSet<>();
+
+    assertTrue(hashset.add("String Added"));
+}
+```
+
+## contains()
+
+**The purpose of the contains method is to check if an element is present in a given _HashSet_**. It returns true if the element is found, otherwise false.
+
+We can check for an element in the _HashSet_:
+
+```java filename="hashset_contains.java"
+@Test
+public void whenCheckingForElement_shouldSearchForElement() {
+    Set<String> hashsetContains = new HashSet<>();
+    hashsetContains.add("String Added");
+
+    assertTrue(hashsetContains.contains("String Added"));
+}
+```
+
+## remove()
+
+The method removes the specified element from the set if it’s present. This method returns true if a set contained the specified element.
+
+Let’s see a working example:
+
+```java filename="hashset_remove.java"
+@Test
+public void whenRemovingElement_shouldRemoveElement() {
+    Set<String> removeFromHashSet = new HashSet<>();
+    removeFromHashSet.add("String Added");
+
+    assertTrue(removeFromHashSet.remove("String Added"));
+}
+```
+
+## clear()
+
+We use this method when we intend to remove all the items from a set. The underlying implementation simply clears all elements from the underlying HashMap.
+
+Let’s see that in action:
+
+```java filename="hashset_clear.java"
+@Test
+public void whenClearingHashSet_shouldClearHashSet() {
+    Set<String> clearHashSet = new HashSet<>();
+    clearHashSet.add("String Added");
+    clearHashSet.clear();
+
+    assertTrue(clearHashSet.isEmpty());
+}
+```
+
+## size()
+
+This is one of the fundamental methods in the API. It’s used heavily as it helps in identifying the number of elements present in the _HashSet_. The underlying implementation simply delegates the calculation to the HashMap’s size() method.
+
+Let’s see that in action:
+
+```java filename="hashset_size.java"
+@Test
+public void whenCheckingTheSizeOfHashSet_shouldReturnThesize() {
+    Set<String> hashSetSize = new HashSet<>();
+    hashSetSize.add("String Added");
+
+    assertEquals(1, hashSetSize.size());
+}
+```
+
+## isEmpty()
+
+We can use this method to figure if a given instance of a _HashSet_ is empty or not. This method returns true if the set contains no elements:
+
+```java filename="hashset_isEmpty.java"
+@Test
+public void whenCheckingForEmptyHashSet_shouldCheckForEmpty() {
+    Set<String> emptyHashSet = new HashSet<>();
+
+    assertTrue(emptyHashSet.isEmpty());
+}
+```
+
+## iterator()
+
+The method returns an iterator over the elements in the Set. **The elements are visited in no particular order and iterators are fail-fast**.
+
+We can observe the random iteration order here:
+
+```java filename="hashset_iterator.java"
+@Test
+public void whenIteratingHashSet_shouldIterateHashSet() {
+    Set<String> hashset = new HashSet<>();
+    hashset.add("First");
+    hashset.add("Second");
+    hashset.add("Third");
+    Iterator<String> itr = hashset.iterator();
+    while(itr.hasNext()){
+        System.out.println(itr.next());
+    }
+}
+```
+
+**If the set is modified at any time after the iterator is created in any way except through the iterator’s own remove method, the Iterator throws a ConcurrentModificationException**.
+
+Let’s see that in action:
+
+```java filename="hashset_iterator_exception.java"
+@Test(expected = ConcurrentModificationException.class)
+public void whenModifyingHashSetWhileIterating_shouldThrowException() {
+
+    Set<String> hashset = new HashSet<>();
+    hashset.add("First");
+    hashset.add("Second");
+    hashset.add("Third");
+    Iterator<String> itr = hashset.iterator();
+    while (itr.hasNext()) {
+        itr.next();
+        hashset.remove("Second");
+    }
+}
+```
+
+Alternatively, had we used the iterator’s remove method, then we wouldn’t have encountered the exception:
+
+```java filename="hashset_iterator_exception_refactored.java"
+@Test
+public void whenRemovingElementUsingIterator_shouldRemoveElement() {
+
+    Set<String> hashset = new HashSet<>();
+    hashset.add("First");
+    hashset.add("Second");
+    hashset.add("Third");
+    Iterator<String> itr = hashset.iterator();
+    while (itr.hasNext()) {
+        String element = itr.next();
+        if (element.equals("Second"))
+            itr.remove();
+    }
+
+    assertEquals(2, hashset.size());
+}
+```
+
+**The fail-fast behavior of an iterator cannot be guaranteed as it’s impossible to make any hard guarantees in the presence of unsynchronized concurrent modification**.
+
+Fail-fast iterators throw ConcurrentModificationException on a best-effort basis. Therefore, it’d be wrong to write a program that depended on this exception for its correctness.
+
+## How _HashSet_ Maintains Uniqueness?
+
+When we put an object into a _HashSet_, it uses the object’s hashcode value to determine if an element is not in the set already.
+
+Each hash code value corresponds to a certain bucket location which can contain various elements, for which the calculated hash value is the same. **But two objects with the same hashCode might not be equal**.
+
+So, objects within the same bucket will be compared using the equals() method.
+
+## Performance of _HashSet_
+
+The performance of a _HashSet_ is affected mainly by two parameters – its _Initial Capacity_ and the _Load Factor_.
+
+The expected time complexity of adding an element to a set is _O(1)_ which can drop to _O(n)_ in the worst case scenario (only one bucket present) – therefore, **it’s essential to maintain the right HashSet’s capacity**.
+
+An important note: since JDK 8, the worst case time complexity is O(log\*n).
+
+The load factor describes what is the maximum fill level, above which, a set will need to be resized.
+
+We can also create a _HashSet_ with custom values for _initial capacity_ and _load factor_:
+
+```java filename="hashset_performance.java"
+Set<String> hashset = new HashSet<>();
+Set<String> hashset = new HashSet<>(20);
+Set<String> hashset = new HashSet<>(20, 0.5f);
+```
+
+In the first case, the default values are used – the initial capacity of 16 and the load factor of 0.75. In the second, we override the default capacity and in the third one, we override both.
+
+**A low initial capacity reduces space complexity but increases the frequency of rehashing which is an expensive process.**
+
+On the other hand, **a high initial capacity increases the cost of iteration and the initial memory consumption**.
+
+As a rule of thumb:
+
+A high initial capacity is good for a large number of entries coupled with little to no iteration
+A low initial capacity is good for few entries with a lot of iteration
+It’s, therefore, very important to strike the correct balance between the two. Usually, the default implementation is optimized and works just fine, should we feel the need to tune these parameters to suit the requirements, we need to do judiciously.
+
+## Reference
+
+[Baeldung - A Guide to HashSet in Java](https://www.baeldung.com/java-hashset)
