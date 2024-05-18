@@ -1,16 +1,76 @@
-# Nextra Docs Template 
+# Java Handbook
 
-This is a template for creating documentation with [Nextra](https://nextra.site).
+A central repo showcasing various Java features.
 
-[**Live Demo →**](https://nextra-docs-template.vercel.app)
+## Roadmap
 
-[![](.github/screenshot.png)](https://nextra-docs-template.vercel.app)
+### Java:
 
-## Quick Start
+- HashSet
 
-Click the button to clone this repository and deploy it on Vercel:
+- HashMap
 
-[![](https://vercel.com/button)](https://vercel.com/new/clone?s=https%3A%2F%2Fgithub.com%2Fshuding%2Fnextra-docs-template&showOptionalTeamCreation=false)
+- ArrayList
+
+- Interface
+
+- Abstract
+
+- Static variables
+
+- Lambda expressions
+
+- Streams
+
+- Threads (Concurrency or Multithreading)
+
+- Sorting
+
+- Garbage Collection
+
+- Scopes (e.g SessionScope, RequestScope)
+
+- Queues
+
+- Functional interfaces
+
+- Generics and Wildcards
+
+- Annotations and Reflection
+
+- Asynchronous (with CompletableFuture)
+
+### Java EE:
+
+- Enterprise JavaBean (EJB)
+
+- Java Web Services (e.g JAX-RS)
+
+- Java Persistence API (JPA)
+
+- Java Message Service (JMS)
+
+- Context and Dependency Injection (CDI)
+
+- Java Transaction API (JTA)
+
+- Java API for WebSockets (WebSocket API)
+
+- Java Authentication and Authorization Service (JAAS)
+
+- Batch Processing (Batch API)
+
+- Java EE Interceptors
+
+## Local Development
+
+First, run `pnpm i` to install the dependencies.
+
+Then, run `pnpm dev` to start the development server and visit localhost:3000.
+
+## License
+
+This project is licensed under the MIT License.
 
 ## Local Development
 
