@@ -1,4 +1,4 @@
-# Java Handbook
+# Javapedia
 
 A central repo showcasing various Java features.
 
