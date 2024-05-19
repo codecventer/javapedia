@@ -4,7 +4,7 @@ A central repo showcasing various Java features.
 
 ## Roadmap
 
-### Java:
+### Java
 
 - HashSet
 
@@ -40,7 +40,7 @@ A central repo showcasing various Java features.
 
 - Asynchronous (with CompletableFuture)
 
-### Java EE:
+### Java EE
 
 - Enterprise JavaBean (EJB)
 
@@ -61,16 +61,6 @@ A central repo showcasing various Java features.
 - Batch Processing (Batch API)
 
 - Java EE Interceptors
-
-## Local Development
-
-First, run `pnpm i` to install the dependencies.
-
-Then, run `pnpm dev` to start the development server and visit localhost:3000.
-
-## License
-
-This project is licensed under the MIT License.
 
 ## Local Development
 

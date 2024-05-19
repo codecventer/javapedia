@@ -17,7 +17,7 @@ public HashSet() {
 }
 ```
 
-## add()
+### _add()_
 
 The add() method can be used for adding elements to a set. **The method contract states that an element will be added only when it isn’t already present in a set**. If an element was added, the method returns true, otherwise – false.
 
@@ -32,7 +32,7 @@ public void whenAddingElement_shouldAddElement() {
 }
 ```
 
-## contains()
+### _contains()_
 
 **The purpose of the contains method is to check if an element is present in a given _HashSet_**. It returns true if the element is found, otherwise false.
 
@@ -48,7 +48,7 @@ public void whenCheckingForElement_shouldSearchForElement() {
 }
 ```
 
-## remove()
+### _remove()_
 
 The method removes the specified element from the set if it’s present. This method returns true if a set contained the specified element.
 
@@ -64,7 +64,7 @@ public void whenRemovingElement_shouldRemoveElement() {
 }
 ```
 
-## clear()
+### _clear()_
 
 We use this method when we intend to remove all the items from a set. The underlying implementation simply clears all elements from the underlying HashMap.
 
@@ -81,7 +81,7 @@ public void whenClearingHashSet_shouldClearHashSet() {
 }
 ```
 
-## size()
+### _size()_
 
 This is one of the fundamental methods in the API. It’s used heavily as it helps in identifying the number of elements present in the _HashSet_. The underlying implementation simply delegates the calculation to the HashMap’s size() method.
 
@@ -97,7 +97,7 @@ public void whenCheckingTheSizeOfHashSet_shouldReturnThesize() {
 }
 ```
 
-## isEmpty()
+### _isEmpty()_
 
 We can use this method to figure if a given instance of a _HashSet_ is empty or not. This method returns true if the set contains no elements:
 
@@ -110,7 +110,7 @@ public void whenCheckingForEmptyHashSet_shouldCheckForEmpty() {
 }
 ```
 
-## iterator()
+### _iterator()_
 
 The method returns an iterator over the elements in the Set. **The elements are visited in no particular order and iterators are fail-fast**.
 

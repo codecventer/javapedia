@@ -1,0 +1,213 @@
+# HashMap
+
+## Basic Usage
+
+**Let’s first look at what it means that _HashMap_ is a map. A map is a key-value mapping, which means that every key is mapped to exactly one value and that we can use the key to retrieve the corresponding value from a map.**
+
+One might ask why not simply add the value to a list. Why do we need a _HashMap_? The simple reason is performance. If we want to find a specific element in a list, the time complexity is _O(n)_ and if the list is sorted, it will be _O(log n)_ using, for example, a binary search.
+
+The advantage of a _HashMap_ is that the time complexity to insert and retrieve a value is _O(1)_ on average. We’ll look at how that can be achieved later. Let’s first look at how to use _HashMap_.
+
+### Setup
+
+Let’s create a simple class that we’ll use throughout the article:
+
+```java filename="hash_map_setup.java"
+public class Product {
+
+    private String name;
+    private String description;
+    private List<String> tags;
+
+    // standard getters/setters/constructors
+
+    public Product addTagsOfOtherProduct(Product product) {
+        this.tags.addAll(product.getTags());
+        return this;
+    }
+}
+```
+
+### Put
+
+We can now create a _HashMap_ with the key of type _String_ and elements of type _Product_:
+
+```java filename="hashmap_put.java"
+Map<String, Product> productsByName = new HashMap<>();
+```
+
+And add products to our _HashMap_:
+
+```java filename="hashmap_put_1.java"
+Product eBike = new Product("E-Bike", "A bike with a battery");
+Product roadBike = new Product("Road bike", "A bike for competition");
+productsByName.put(eBike.getName(), eBike);
+productsByName.put(roadBike.getName(), roadBike);
+```
+
+### Get
+
+We can retrieve a value from the map by its key:
+
+```java filename="hash_map_get.java"
+Product nextPurchase = productsByName.get("E-Bike");
+assertEquals("A bike with a battery", nextPurchase.getDescription());
+```
+
+If we try to find a value for a key that doesn’t exist in the map, we’ll get a _null_ value:
+
+```java filename="hash_map_get_1.java"
+Product nextPurchase = productsByName.get("Car");
+assertNull(nextPurchase);
+```
+
+And if we insert a second value with the same key, we’ll only get the last inserted value for that key:
+
+```java filename="hash_map_get_2.java"
+Product newEBike = new Product("E-Bike", "A bike with a better battery");
+productsByName.put(newEBike.getName(), newEBike);
+assertEquals("A bike with a better battery", productsByName.get("E-Bike").getDescription());
+```
+
+### Null as the key
+
+_HashMap_ also allows us to have _null_ as a key:
+
+```java filename="hash_map_null_key.java"
+Product defaultProduct = new Product("Chocolate", "At least buy chocolate");
+productsByName.put(null, defaultProduct);
+
+Product nextPurchase = productsByName.get(null);
+assertEquals("At least buy chocolate", nextPurchase.getDescription());
+```
+
+### Values with Same Key
+
+Furthermore, we can insert the same object twice with a different key:
+
+```java filename="hash_map_same_key_value.java"
+productsByName.put(defaultProduct.getName(), defaultProduct);
+assertSame(productsByName.get(null), productsByName.get("Chocolate"));
+```
+
+### Remove Value
+
+We can remove a key-value mapping from the _HashMap_:
+
+```java filename="hash_map_remove.java"
+productsByName.remove("E-Bike");
+assertNull(productsByName.get("E-Bike"));
+```
+
+### Check if Key or Value Exists
+
+To check if a key is present in the map, we can use the _containsKey()_ method:
+
+```java filename="hash_map_check_exists.java"
+productsByName.containsKey("E-Bike");
+```
+
+Or, to check if a value is present in the map, we can use the _containsValue()_ method:
+
+```java filename="hash_map_check_exists_1.java"
+productsByName.containsValue(eBike);
+```
+
+Both method calls will return _true_ in our example. Though they look very similar, there is an important difference in performance between these two method calls. **The complexity to check if a key exists is _O(1)_, while the complexity to check for an element is _O(n)_, as it’s necessary to loop over all the elements in the map**.
+
+### Iterating Over _HashMap_
+
+There are three basic ways to iterate over all key-value pairs in a _HashMap_.
+
+We can iterate over the set of all keys:
+
+```java filename="hash_map_iterator.java"
+for(String key : productsByName.keySet()) {
+    Product product = productsByName.get(key);
+}
+```
+
+Or we can iterate over the set of all entries:
+
+```java filename="hash_map_iterator_1.java"
+for(Map.Entry<String, Product> entry : productsByName.entrySet()) {
+    Product product =  entry.getValue();
+    String key = entry.getKey();
+    //do something with the key and value
+}
+```
+
+Fiinally, we can iterate over all values:
+
+```java filename="hash_map_iterator_2.java"
+List<Product> products = new ArrayList<>(productsByName.values());
+```
+
+## The Key
+
+**We can use any class as the key in our _HashMap_. However, for the map to work properly, we need to provide an implementation for _equals()_ and _hashCode()_**. Let’s say we want to have a map with the product as the key and the price as the value:
+
+```java filename="hash_map_key.java"
+HashMap<Product, Integer> priceByProduct = new HashMap<>();
+priceByProduct.put(eBike, 900);
+```
+
+Let’s implement the _equals()_ and _hashCode()_ methods:
+
+```java filename="hash_map_key_1.java"
+@Override
+public boolean equals(Object o) {
+    if (this == o) {
+        return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+        return false;
+    }
+
+    Product product = (Product) o;
+    return Objects.equals(name, product.name) &&
+      Objects.equals(description, product.description);
+}
+
+@Override
+public int hashCode() {
+    return Objects.hash(name, description);
+}
+```
+
+**Note that _hashCode()_ and _equals()_ need to be overridden only for classes that we want to use as map keys, not for classes that are only used as values in a map**. We’ll see why this is necessary in section 5 of this article.
+
+## Additional Methods as of Java 8
+
+Java 8 added several functional-style methods to _HashMap_. In this section, we’ll look at some of these methods.
+
+**For each method, we’ll look at two examples**. The first example shows how to use the new method, and the second example shows how to achieve the same in earlier versions of Java.
+
+As these methods are quite straightforward, we won’t look at more detailed examples.
+
+### _forEach()_
+
+The _forEach_ method is the functional-style way to iterate over all elements in the map:
+
+```java filename="hash_map_for_each.java"
+productsByName.forEach( (key, product) -> {
+    System.out.println("Key: " + key + " Product:" + product.getDescription());
+    //do something with the key and value
+});
+```
+
+Prior to Java 8:
+
+```java filename="hash_map_for_each_1.java"
+for(Map.Entry<String, Product> entry : productsByName.entrySet()) {
+    Product product =  entry.getValue();
+    String key = entry.getKey();
+    //do something with the key and value
+}
+```
+
+### _getOrDefault()_
+
+## Reference
+
+[Baeldung - A Guide to Java HashMap](https://www.baeldung.com/java-hashmap)
