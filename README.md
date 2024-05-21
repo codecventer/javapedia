@@ -62,6 +62,52 @@ A central repo showcasing various Java features.
 
 - Java EE Interceptors
 
+### Other
+
+#### Database
+
+- 'Explain' queries
+
+- Btree
+
+- Binary tree
+
+- Indexes
+
+- Joins
+
+- Write-Ahead logging
+
+#### Clean Code
+
+- SOLID principles
+
+#### Design Patterns
+
+- Repository pattern
+
+- Builder pattern
+
+- Singleton pattern
+
+- Factory pattern
+
+- Mapper pattern
+
+#### Testing
+
+- Unit test
+
+- Integration test
+
+#### Other
+
+- OOP
+
+- Webhooks
+
+- Errors as values
+
 ## Local Development
 
 First, run `pnpm i` to install the dependencies.
