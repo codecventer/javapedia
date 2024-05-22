@@ -12,7 +12,7 @@ The advantage of a _HashMap_ is that the time complexity to insert and retrieve 
 
 Let’s create a simple class that we’ll use throughout the article:
 
-```java filename="hash_map_setup.java"
+```java
 public class Product {
 
     private String name;
@@ -32,13 +32,13 @@ public class Product {
 
 We can now create a _HashMap_ with the key of type _String_ and elements of type _Product_:
 
-```java filename="hashmap_put.java"
+```java
 Map<String, Product> productsByName = new HashMap<>();
 ```
 
 And add products to our _HashMap_:
 
-```java filename="hashmap_put_1.java"
+```java
 Product eBike = new Product("E-Bike", "A bike with a battery");
 Product roadBike = new Product("Road bike", "A bike for competition");
 productsByName.put(eBike.getName(), eBike);
@@ -49,21 +49,21 @@ productsByName.put(roadBike.getName(), roadBike);
 
 We can retrieve a value from the map by its key:
 
-```java filename="hash_map_get.java"
+```java
 Product nextPurchase = productsByName.get("E-Bike");
 assertEquals("A bike with a battery", nextPurchase.getDescription());
 ```
 
 If we try to find a value for a key that doesn’t exist in the map, we’ll get a _null_ value:
 
-```java filename="hash_map_get_1.java"
+```java
 Product nextPurchase = productsByName.get("Car");
 assertNull(nextPurchase);
 ```
 
 And if we insert a second value with the same key, we’ll only get the last inserted value for that key:
 
-```java filename="hash_map_get_2.java"
+```java
 Product newEBike = new Product("E-Bike", "A bike with a better battery");
 productsByName.put(newEBike.getName(), newEBike);
 assertEquals("A bike with a better battery", productsByName.get("E-Bike").getDescription());
@@ -73,7 +73,7 @@ assertEquals("A bike with a better battery", productsByName.get("E-Bike").getDes
 
 _HashMap_ also allows us to have _null_ as a key:
 
-```java filename="hash_map_null_key.java"
+```java
 Product defaultProduct = new Product("Chocolate", "At least buy chocolate");
 productsByName.put(null, defaultProduct);
 
@@ -85,7 +85,7 @@ assertEquals("At least buy chocolate", nextPurchase.getDescription());
 
 Furthermore, we can insert the same object twice with a different key:
 
-```java filename="hash_map_same_key_value.java"
+```java
 productsByName.put(defaultProduct.getName(), defaultProduct);
 assertSame(productsByName.get(null), productsByName.get("Chocolate"));
 ```
@@ -94,7 +94,7 @@ assertSame(productsByName.get(null), productsByName.get("Chocolate"));
 
 We can remove a key-value mapping from the _HashMap_:
 
-```java filename="hash_map_remove.java"
+```java
 productsByName.remove("E-Bike");
 assertNull(productsByName.get("E-Bike"));
 ```
@@ -103,13 +103,13 @@ assertNull(productsByName.get("E-Bike"));
 
 To check if a key is present in the map, we can use the _containsKey()_ method:
 
-```java filename="hash_map_check_exists.java"
+```java
 productsByName.containsKey("E-Bike");
 ```
 
 Or, to check if a value is present in the map, we can use the _containsValue()_ method:
 
-```java filename="hash_map_check_exists_1.java"
+```java
 productsByName.containsValue(eBike);
 ```
 
@@ -121,7 +121,7 @@ There are three basic ways to iterate over all key-value pairs in a _HashMap_.
 
 We can iterate over the set of all keys:
 
-```java filename="hash_map_iterator.java"
+```java
 for(String key : productsByName.keySet()) {
     Product product = productsByName.get(key);
 }
@@ -129,7 +129,7 @@ for(String key : productsByName.keySet()) {
 
 Or we can iterate over the set of all entries:
 
-```java filename="hash_map_iterator_1.java"
+```java
 for(Map.Entry<String, Product> entry : productsByName.entrySet()) {
     Product product =  entry.getValue();
     String key = entry.getKey();
@@ -139,7 +139,7 @@ for(Map.Entry<String, Product> entry : productsByName.entrySet()) {
 
 Fiinally, we can iterate over all values:
 
-```java filename="hash_map_iterator_2.java"
+```java
 List<Product> products = new ArrayList<>(productsByName.values());
 ```
 
@@ -147,14 +147,14 @@ List<Product> products = new ArrayList<>(productsByName.values());
 
 **We can use any class as the key in our _HashMap_. However, for the map to work properly, we need to provide an implementation for _equals()_ and _hashCode()_**. Let’s say we want to have a map with the product as the key and the price as the value:
 
-```java filename="hash_map_key.java"
+```java
 HashMap<Product, Integer> priceByProduct = new HashMap<>();
 priceByProduct.put(eBike, 900);
 ```
 
 Let’s implement the _equals()_ and _hashCode()_ methods:
 
-```java filename="hash_map_key_1.java"
+```java
 @Override
 public boolean equals(Object o) {
     if (this == o) {
@@ -189,7 +189,7 @@ As these methods are quite straightforward, we won’t look at more detailed exa
 
 The _forEach_ method is the functional-style way to iterate over all elements in the map:
 
-```java filename="hash_map_for_each.java"
+```java
 productsByName.forEach( (key, product) -> {
     System.out.println("Key: " + key + " Product:" + product.getDescription());
     //do something with the key and value
@@ -198,7 +198,7 @@ productsByName.forEach( (key, product) -> {
 
 Prior to Java 8:
 
-```java filename="hash_map_for_each_1.java"
+```java
 for(Map.Entry<String, Product> entry : productsByName.entrySet()) {
     Product product =  entry.getValue();
     String key = entry.getKey();
@@ -210,7 +210,7 @@ for(Map.Entry<String, Product> entry : productsByName.entrySet()) {
 
 Using the _getOrDefault()_ method, we can get a value from the map or return a default element in case there is no mapping for the given key:
 
-```java filename="hash_map_get_or_default.java"
+```java
 Product chocolate = new Product("chocolate", "something sweet");
 Product defaultProduct = productsByName.getOrDefault("horse carriage", chocolate);
 Product bike = productsByName.getOrDefault("E-Bike", chocolate);
@@ -218,7 +218,7 @@ Product bike = productsByName.getOrDefault("E-Bike", chocolate);
 
 Prior to Java 8:
 
-```java filename="hash_map_get_or_default_1.java"
+```java
 Product bike2 = productsByName.containsKey("E-Bike")
     ? productsByName.get("E-Bike")
     : chocolate;
@@ -231,13 +231,13 @@ Product defaultProduct2 = productsByName.containsKey("horse carriage")
 
 With this method, we can add a new mapping, but only if there is not yet a mapping for the given key:
 
-```java filename="hash_map_put_absent.java"
+```java
 productsByName.putIfAbsent("E-Bike", chocolate);
 ```
 
 Prior to Java 8:
 
-```java filename="hash_map_put_absent.java"
+```java
 if(!productsByName.containsKey("E-Bike")) {
     productsByName.put("E-Bike", chocolate);
 }
@@ -247,7 +247,7 @@ if(!productsByName.containsKey("E-Bike")) {
 
 And with _merge()_, we can modify the value for a given key if a mapping exists, or add a new value otherwise:
 
-```java filename="hash_map_merge.java"
+```java
 Product eBike2 = new Product("E-Bike", "A bike with a battery");
 eBike2.getTags().add("sport");
 productsByName.merge("E-Bike", eBike2, Product::addTagsOfOtherProduct);
@@ -255,7 +255,7 @@ productsByName.merge("E-Bike", eBike2, Product::addTagsOfOtherProduct);
 
 Prior to Java 8:
 
-```java filename="hash_map_merge_1.java"
+```java
 if(productsByName.containsKey("E-Bike")) {
     productsByName.get("E-Bike").addTagsOfOtherProduct(eBike2);
 } else {
@@ -267,7 +267,7 @@ if(productsByName.containsKey("E-Bike")) {
 
 With the _compute()_ method, we can compute the value for a given key:
 
-```java filename="hash_map_compute.java"
+```java
 productsByName.compute("E-Bike", (k,v) -> {
     if(v != null) {
         return v.addTagsOfOtherProduct(eBike2);
@@ -279,7 +279,7 @@ productsByName.compute("E-Bike", (k,v) -> {
 
 Prior to Java 8
 
-```java filename="hash_map_compute_1.java"
+```java
 if(productsByName.containsKey("E-Bike")) {
     productsByName.get("E-Bike").addTagsOfOtherProduct(eBike2);
 } else {
@@ -319,7 +319,7 @@ Let’s see what happens when our key changes after we used it to store a value 
 
 For this example, we’ll create the _MutableKey_:
 
-```java filename="hash_map_mutable.java"
+```java
 public class MutableKey {
     private String name;
 
@@ -346,7 +346,7 @@ public class MutableKey {
 
 And here goes the test:
 
-```java filename="hash_map_mutable_1.java"
+```java
 MutableKey key = new MutableKey("initial");
 
 Map<MutableKey, String> items = new HashMap<>();

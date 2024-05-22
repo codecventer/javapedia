@@ -11,7 +11,7 @@ Let’s recall the most important aspects of this implementation:
 - It doesn’t maintain insertion order
 - It’s not thread-safe
 
-```java filename="hashset.java"
+```java
 public HashSet() {
     map = new HashMap<>();
 }
@@ -23,7 +23,7 @@ The add() method can be used for adding elements to a set. **The method contract
 
 We can add an element to a _HashSet_ like:
 
-```java filename="hashset_add.java"
+```java
 @Test
 public void whenAddingElement_shouldAddElement() {
     Set<String> hashset = new HashSet<>();
@@ -38,7 +38,7 @@ public void whenAddingElement_shouldAddElement() {
 
 We can check for an element in the _HashSet_:
 
-```java filename="hashset_contains.java"
+```java
 @Test
 public void whenCheckingForElement_shouldSearchForElement() {
     Set<String> hashsetContains = new HashSet<>();
@@ -54,7 +54,7 @@ The method removes the specified element from the set if it’s present. This me
 
 Let’s see a working example:
 
-```java filename="hashset_remove.java"
+```java
 @Test
 public void whenRemovingElement_shouldRemoveElement() {
     Set<String> removeFromHashSet = new HashSet<>();
@@ -70,7 +70,7 @@ We use this method when we intend to remove all the items from a set. The underl
 
 Let’s see that in action:
 
-```java filename="hashset_clear.java"
+```java
 @Test
 public void whenClearingHashSet_shouldClearHashSet() {
     Set<String> clearHashSet = new HashSet<>();
@@ -87,7 +87,7 @@ This is one of the fundamental methods in the API. It’s used heavily as it hel
 
 Let’s see that in action:
 
-```java filename="hashset_size.java"
+```java
 @Test
 public void whenCheckingTheSizeOfHashSet_shouldReturnThesize() {
     Set<String> hashSetSize = new HashSet<>();
@@ -101,7 +101,7 @@ public void whenCheckingTheSizeOfHashSet_shouldReturnThesize() {
 
 We can use this method to figure if a given instance of a _HashSet_ is empty or not. This method returns true if the set contains no elements:
 
-```java filename="hashset_isEmpty.java"
+```java
 @Test
 public void whenCheckingForEmptyHashSet_shouldCheckForEmpty() {
     Set<String> emptyHashSet = new HashSet<>();
@@ -116,7 +116,7 @@ The method returns an iterator over the elements in the Set. **The elements are 
 
 We can observe the random iteration order here:
 
-```java filename="hashset_iterator.java"
+```java
 @Test
 public void whenIteratingHashSet_shouldIterateHashSet() {
     Set<String> hashset = new HashSet<>();
@@ -134,7 +134,7 @@ public void whenIteratingHashSet_shouldIterateHashSet() {
 
 Let’s see that in action:
 
-```java filename="hashset_iterator_exception.java"
+```java
 @Test(expected = ConcurrentModificationException.class)
 public void whenModifyingHashSetWhileIterating_shouldThrowException() {
 
@@ -152,7 +152,7 @@ public void whenModifyingHashSetWhileIterating_shouldThrowException() {
 
 Alternatively, had we used the iterator’s remove method, then we wouldn’t have encountered the exception:
 
-```java filename="hashset_iterator_exception_refactored.java"
+```java
 @Test
 public void whenRemovingElementUsingIterator_shouldRemoveElement() {
 
@@ -195,7 +195,7 @@ The load factor describes what is the maximum fill level, above which, a set wil
 
 We can also create a _HashSet_ with custom values for _initial capacity_ and _load factor_:
 
-```java filename="hashset_performance.java"
+```java
 Set<String> hashset = new HashSet<>();
 Set<String> hashset = new HashSet<>(20);
 Set<String> hashset = new HashSet<>(20, 0.5f);
