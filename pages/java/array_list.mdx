@@ -1,0 +1,205 @@
+# ArrayList
+
+## Overview
+
+In this article, we’re going to take a look at _ArrayList_ class from the Java Collections Framework. We’ll discuss its properties, common use cases, as well as its advantages and disadvantages.
+
+_ArrayList_ resides within Java Core Libraries, so you don’t need any additional libraries. In order to use it just add the following import statement:
+
+```java
+import java.util.ArrayList;
+```
+
+_List_ represents an ordered sequence of values where some value may occur more than one time.
+
+_ArrayList_ is one of the _List_ implementations built atop an array, which is able to dynamically grow and shrink as you add/remove elements. Elements could be easily accessed by their indexes starting from zero. This implementation has the following properties:
+
+Random access takes _O(1)_ time
+Adding element takes amortized constant time _O(1)_
+Inserting/Deleting takes _O(n)_ time
+Searching takes _O(n)_ time for unsorted array and _O(log n)_ for a sorted one
+
+## Create an _ArrayList_
+
+_ArrayList_ has several constructors and we will present them all in this section.
+
+First, notice that _ArrayList_ is a generic class, so you can parameterize it with any type you want and the compiler will ensure that, for example, you will not be able to put _Integer_ values inside a collection of _Strings_. Also, you don’t need to cast elements when retrieving them from a collection.
+
+Secondly, it is good practice to use generic interface _List_ as a variable type, because it decouples it from a particular implementation.
+
+### Default No-Arg Constructor
+
+```java
+List<String> list = new ArrayList<>();
+assertTrue(list.isEmpty());
+```
+
+We’re simply creating an empty _ArrayList_ instance.
+
+### Constructor Accepting Initial Capacity
+
+```java
+List<String> list = new ArrayList<>(20);
+```
+
+Here you specify the initial length of an underlying array. This may help you avoid unnecessary resizing while adding new items.
+
+### Constructor Accepting _Collection_
+
+```java
+Collection<Integer> numbers 
+  = IntStream.range(0, 10).boxed().collect(toSet());
+
+List<Integer> list = new ArrayList<>(numbers);
+assertEquals(10, list.size());
+assertTrue(numbers.containsAll(list));
+```
+
+Notice, that element of the _Collection_ instance are used for populating the underlying array.
+
+## Add Elements to the _ArrayList_
+
+You may insert an element either at the end or at the specific position:
+
+```java
+List<Long> list = new ArrayList<>();
+
+list.add(1L);
+list.add(2L);
+list.add(1, 3L);
+
+assertThat(Arrays.asList(1L, 3L, 2L), equalTo(list));
+```
+
+You may also insert a collection or several elements at once:
+
+```java
+List<Long> list = new ArrayList<>(Arrays.asList(1L, 2L, 3L));
+LongStream.range(4, 10).boxed()
+  .collect(collectingAndThen(toCollection(ArrayList::new), ys -> list.addAll(0, ys)));
+assertThat(Arrays.asList(4L, 5L, 6L, 7L, 8L, 9L, 1L, 2L, 3L), equalTo(list));
+```
+
+## Iterate Over the _ArrayList_
+
+There are two types of iterators available: _Iterator_ and _ListIterator_.
+
+While the former gives you an opportunity to traverse the list in one direction, the latter allows you to traverse it in both directions.
+
+Here we will show you only the _ListIterator_:
+
+```java
+List<Integer> list = new ArrayList<>(
+  IntStream.range(0, 10).boxed().collect(toCollection(ArrayList::new))
+);
+ListIterator<Integer> it = list.listIterator(list.size());
+List<Integer> result = new ArrayList<>(list.size());
+while (it.hasPrevious()) {
+    result.add(it.previous());
+}
+
+Collections.reverse(list);
+assertThat(result, equalTo(list));
+```
+
+You may also search, add or remove elements using iterators.
+
+## Search the _ArrayList_
+
+We will demonstrate how searching works using a collection:
+
+```java
+List<String> list = LongStream.range(0, 16)
+  .boxed()
+  .map(Long::toHexString)
+  .collect(toCollection(ArrayList::new));
+List<String> stringsToSearch = new ArrayList<>(list);
+stringsToSearch.addAll(list);
+```
+
+### Searching an Unsorted List
+
+In order to find an element you may use _indexOf()_ or _lastIndexOf()_ methods. They both accept an object and return _int_ value:
+
+```java
+assertEquals(10, stringsToSearch.indexOf("a"));
+assertEquals(26, stringsToSearch.lastIndexOf("a"));
+```
+
+If you want to find all elements satisfying a predicate, you may filter collection using Java 8 _Stream API_ using _Predicate_ like this:
+
+```java
+Set<String> matchingStrings = new HashSet<>(Arrays.asList("a", "c", "9"));
+
+List<String> result = stringsToSearch
+  .stream()
+  .filter(matchingStrings::contains)
+  .collect(toCollection(ArrayList::new));
+
+assertEquals(6, result.size());
+```
+
+It is also possible to use a _for_ loop or an iterator:
+
+```java
+Iterator<String> it = stringsToSearch.iterator();
+Set<String> matchingStrings = new HashSet<>(Arrays.asList("a", "c", "9"));
+
+List<String> result = new ArrayList<>();
+while (it.hasNext()) {
+    String s = it.next();
+    if (matchingStrings.contains(s)) {
+        result.add(s);
+    }
+}
+```
+
+### Searching a Sorted List
+
+If you have a sorted array, then you may use a binary search algorithm which works faster than linear search:
+
+```java
+List<String> copy = new ArrayList<>(stringsToSearch);
+Collections.sort(copy);
+int index = Collections.binarySearch(copy, "f");
+assertThat(index, not(equalTo(-1)));
+```
+
+Notice that if an element is not found then -1 will be returned.
+
+## Remove Elements from the _ArrayList_
+
+In order to remove an element, you should find its index and only then perform the removal via _remove()_ method. An overloaded version of this method, that accepts an object, searches for it and performs removal of the first occurrence of an equal element:
+
+```java
+List<Integer> list = new ArrayList<>(
+  IntStream.range(0, 10).boxed().collect(toCollection(ArrayList::new))
+);
+Collections.reverse(list);
+
+list.remove(0);
+assertThat(list.get(0), equalTo(8));
+
+list.remove(Integer.valueOf(0));
+assertFalse(list.contains(0));
+```
+
+But be careful when working with boxed types such as _Integer_. In order to remove a particular element, you should first box _int_ value or otherwise, an element will be removed by its index.
+
+You may as well use the aforementioned _Stream API_ for removing several items, but we won’t show it here. For this purpose we will use an iterator:
+
+```java
+Set<String> matchingStrings
+ = HashSet<>(Arrays.asList("a", "b", "c", "d", "e", "f"));
+
+Iterator<String> it = stringsToSearch.iterator();
+while (it.hasNext()) {
+    if (matchingStrings.contains(it.next())) {
+        it.remove();
+    }
+}
+```
+
+## Reference
+
+[Baeldung - Guide to the Java ArrayList](https://www.baeldung.com/java-arraylist)
