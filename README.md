@@ -102,6 +102,12 @@ A central repo showcasing various Java features.
 
 #### Other
 
+- Algorithms
+
+- Data structures
+
+- Locality of behaviour
+
 - OOP
 
 - Webhooks
