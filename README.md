@@ -16,9 +16,9 @@ A central repo showcasing various Java features.
 
 - Abstract
 
-- Static variables
+- Static Keyword
 
-- Lambda expressions
+- Lambda Expressions
 
 - Streams
 
@@ -32,7 +32,7 @@ A central repo showcasing various Java features.
 
 - Queues
 
-- Functional interfaces
+- Functional Interfaces
 
 - Generics and Wildcards
 
@@ -66,17 +66,17 @@ A central repo showcasing various Java features.
 
 #### Database
 
-- 'Explain' queries
+- 'Explain' Queries
 
 - Btree
 
-- Binary tree
+- Binary Tree
 
 - Indexes
 
 - Joins
 
-- Write-Ahead logging
+- Write-Ahead Logging
 
 #### Clean Code
 
@@ -96,23 +96,23 @@ A central repo showcasing various Java features.
 
 #### Testing
 
-- Unit test
+- Unit Test
 
-- Integration test
+- Integration Test
 
 #### Other
 
 - Algorithms
 
-- Data structures
+- Data Structures
 
-- Locality of behaviour
+- Locality of Behaviour
 
 - OOP
 
 - Webhooks
 
-- Errors as values
+- Errors as Values
 
 ## Local Development
 
